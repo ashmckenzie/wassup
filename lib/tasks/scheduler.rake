@@ -4,6 +4,8 @@ namespace :scheduler do
   task :start => :environment do
     scheduler = Rufus::Scheduler.start_new
 
+    # NEED another scheduler here to do the 'monitoring'
+
     scheduler.every '1m', first_in: 0 do
 
       # Checks::Disk.new('/', warn_level: 85, error_level: 95).check!(Host.first)
@@ -20,8 +22,8 @@ namespace :scheduler do
         }
       ]
 
-      # hosts = Host.all
-      hosts = [ Host.all[1] ]
+      hosts = Host.all
+      # hosts = [ Host.all[1] ]
 
       hosts.each do |host|
         message = "Kicking of checks for #{host.label} (#{host.hostname})"

@@ -1,0 +1,9 @@
+<section class="hosts">
+  <%- @hosts.each do |host| %>
+    <h2><%= host.label %></h2>
+    <ul>
+      <%- host.results_newest_first.each do |result| %>
+      <%- end %>
+    </ul>
+  <%- end %>
+</section>

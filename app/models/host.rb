@@ -9,6 +9,10 @@ class Host
 
   has_many :results
 
+  def results_newest_first
+    results.order_by('created_at DESC')
+  end
+
   def connection
     @connection ||= Gofer::Host.new(hostname, user, :keys => keys)
   end
@@ -20,5 +24,4 @@ class Host
       Rails.logger.error "Exception raised - #{e.inspect}"
     end
   end
-
 end
