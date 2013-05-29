@@ -10,11 +10,33 @@ class CheckerWorker
   def perform host_id, checks
     host = Host.find(host_id['$oid'])
 
-    checks.each do |check_options|
-      check = Check.create(check_options)
-      check.check!(host)
-      host.results << Result.new(outcome: check.result.for_json)
+    checks.each do |opts|
+      check = check!(host, opts)
       Rails.logger.info ">> #{host.hostname}: #{check.check_type} - #{check.result.for_json}"
     end
+  end
+
+  private
+
+  def check! host, options
+    result = Result.create(host: host, checked_on: nodename)
+
+    check = check_from_options(options)
+
+    # Exception / timeout handling here
+    check.check!(host)
+
+    result.outcome = check.result.for_json
+    result.save!
+
+    check
+  end
+
+  def check_from_options options
+    Check.create(options)
+  end
+
+  def nodename
+    `uname -n`.chomp!
   end
 end

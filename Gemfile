@@ -40,6 +40,8 @@ gem 'gofer'
 
 gem 'hashie'
 
+gem 'draper'
+
 group :development do
   gem 'pry'
   gem 'foreman'

@@ -20,7 +20,8 @@ namespace :scheduler do
         }
       ]
 
-      hosts = Host.all
+      # hosts = Host.all
+      hosts = [ Host.all[1] ]
 
       hosts.each do |host|
         message = "Kicking of checks for #{host.label} (#{host.hostname})"
