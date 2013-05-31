@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'awesome_print'
 
 class BaseCheck
 
@@ -13,8 +14,8 @@ class BaseCheck
   end
 
   def self.create options
-    klass = options['klass']
-    klass.constantize.new(options['initialize_with'])
+    klass = "Checks::#{options['type'].camelize}"
+    klass.constantize.new(options['config'])
   end
 
   def result_as_json

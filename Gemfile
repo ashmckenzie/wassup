@@ -43,6 +43,7 @@ group :development do
   gem 'thin'
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'awesome_print'
 end
 
 group :doc do

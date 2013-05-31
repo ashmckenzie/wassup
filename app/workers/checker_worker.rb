@@ -33,7 +33,7 @@ class CheckerWorker
   end
 
   def check_from_options options
-    Check.create(options)
+    BaseCheck.create(options)
   end
 
   def nodename

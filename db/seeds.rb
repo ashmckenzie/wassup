@@ -18,3 +18,9 @@ mac = Host.create(
   user: 'ash',
   keys: [ '/Users/ash/.ssh/id_rsa' ]
 )
+
+mac.checks = [
+  { type: 'disk', config: { disk: '/', warn_level: 30 } }
+]
+
+mac.save!
