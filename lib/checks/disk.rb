@@ -42,13 +42,11 @@ module Checks
 
       def process!
         if success?
-          # splut = result.stdout.split(/\n/)[1].split(/\s+/)
-
-          # @total = splut[1].to_i
-          # @used = splut[2].to_i
-          # @available = splut[3].to_i
-
           x, @total, @used, @available = result.stdout.split(/\n/)[1].split(/\s+/)
+
+          @total = total.to_i
+          @used = used.to_i
+          @available = available.to_i
 
           if error?
             @status = 'ERROR'
@@ -63,11 +61,11 @@ module Checks
       private
 
       def percent_free
-        total > 0 ? ((available.to_f / total.to_f) * 100).round(3) : 0
+        total > 0 ? ((available.to_f / total.to_f) * 100).round(3) : -1
       end
 
       def percent_used
-        total > 0 ? ((used.to_f / total.to_f) * 100).round(3) : 0
+        total > 0 ? ((used.to_f / total.to_f) * 100).round(3) : -1
       end
     end
 
