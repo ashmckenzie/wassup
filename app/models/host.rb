@@ -6,6 +6,7 @@ class Host
   field :hostname, type: String
   field :user, type: String
   field :keys, type: Array
+  field :checks, type: Array
 
   has_many :results
 

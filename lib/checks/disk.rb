@@ -1,72 +1,19 @@
-require 'forwardable'
-
 module Checks
-  class Disk
+  class Disk < BaseCheck
 
-    extend Forwardable
-
-    class Result
+    class Result < BaseResult
 
       attr_reader :total, :used, :available
 
-      def initialize check
-        @check = check
-        @result = yield
+      def initialize check, &blk
+        @total = -1
+        @used = -1
+        @available = -1
 
-        @total = 0
-        @used = 0
-        @available = 0
-
-        @status = 'NOTOK'
+        super(check, blk)
       end
 
       def for_json
-        if success?
-
-          splut = result.stdout.split(/\n/)[1].split(/\s+/)
-
-          @total = splut[1].to_i
-          @used = splut[2].to_i
-          @available = splut[3].to_i
-
-          if error?
-            @status = 'ERROR'
-          elsif warn?
-            @status = 'WARN'
-          else
-            @status = 'OK'
-          end
-        end
-
-        output
-      end
-
-      def success?
-        result.exit_status == 0
-      end
-
-      def warn?
-        percent_free <= 0 || percent_used >= check.warn_level
-      end
-
-      def error?
-        percent_free <= 0 || percent_used >= check.error_level
-      end
-
-      def percent_free
-        total > 0 ? ((available.to_f / total.to_f) * 100).round(3) : 0
-      end
-
-      def percent_used
-        total > 0 ? ((used.to_f / total.to_f) * 100).round(3) : 0
-      end
-
-      private
-
-      attr_reader :check, :host, :result
-      attr_accessor :status
-
-      def output
         {
           status: status,
           check: {
@@ -82,37 +29,73 @@ module Checks
           }
         }
       end
-    end
 
-    # ---------------------------------------------------------------------- #
+      def warn?
+        percent_free <= 0 || percent_used >= check.warn_level
+      end
 
-    attr_reader :disk, :result, :warn_level, :error_level, :result
+      def error?
+        percent_free <= 0 || percent_used >= check.error_level
+      end
 
-    def initialize attributes={}
-      attributes.each do |name, value|
-        send("#{name}=", value)
+      protected
+
+      def process!
+        if success?
+          # splut = result.stdout.split(/\n/)[1].split(/\s+/)
+
+          # @total = splut[1].to_i
+          # @used = splut[2].to_i
+          # @available = splut[3].to_i
+
+          x, @total, @used, @available = result.stdout.split(/\n/)[1].split(/\s+/)
+
+          if error?
+            @status = 'ERROR'
+          elsif warn?
+            @status = 'WARN'
+          else
+            @status = 'OK'
+          end
+        end
+      end
+
+      private
+
+      def percent_free
+        total > 0 ? ((available.to_f / total.to_f) * 100).round(3) : 0
+      end
+
+      def percent_used
+        total > 0 ? ((used.to_f / total.to_f) * 100).round(3) : 0
       end
     end
 
-    # def initialize disk, warn_level: 80, error_level: 90
-    #   @disk = disk
-    #   @warn_level = warn_level.to_f
-    #   @error_level = error_level.to_f
-    # end
+    # -------------------------------------------------------------------- #
 
-    def check! host
-      @result = Result.new(self) { host.run!(command) }
+    attr_reader :disk, :result, :warn_level, :error_level
+
+    def initialize eattributes={}
+      @warn_level = 80
+      @error_level = 90
+      super
     end
 
     def check_type
       'disk'
     end
 
-    private
+    def check! host
+      @result = Result.new(self) { host.run!(command) }
+    end
 
-    attr_writer :disk, :result, :warn_level, :error_level
+    protected
 
     def_delegators :@result, :total, :available, :used
+
+    private
+
+    attr_writer :disk, :warn_level, :error_level
 
     def command
       sprintf('df %s', disk)
