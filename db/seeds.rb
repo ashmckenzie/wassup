@@ -21,7 +21,8 @@ mac = Host.create(
 
 mac.checks = [
   { type: 'disk', config: { disk: '/' } },
-  { type: 'process', config: { string: 'redis', minimum: 1 } },
+  { type: 'process', config: { string: 'mysqld', minimum: 1 } },
+  { type: 'port', config: { port_number: 3306 } },
 ]
 
 mac.save!

@@ -15,6 +15,8 @@ module Checks
         {
           status: status,
           check: {
+            type: check.check_type,
+            string: check.string,
             minimum: check.minimum,
             maximum: check.maximum
           },
@@ -68,10 +70,6 @@ module Checks
 
     def check_type
       'process'
-    end
-
-    def check! host
-      @result = Result.new(self) { host.run!(command) }
     end
 
     protected

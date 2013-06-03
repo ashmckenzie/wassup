@@ -26,7 +26,7 @@ class CheckerWorker
     # Exception / timeout handling here
     check.check!(host)
 
-    result.outcome = check.result.for_json
+    result.outcome = check.result_as_json
     result.save!
 
     check

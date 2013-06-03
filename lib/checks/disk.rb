@@ -17,6 +17,8 @@ module Checks
         {
           status: status,
           check: {
+            type: check.check_type,
+            disk: check.disk,
             warn_level: check.warn_level,
             error_level: check.error_level
           },
@@ -74,6 +76,8 @@ module Checks
 
     # -------------------------------------------------------------------- #
 
+    # reload! ; host = Host.first ; check = Checks::Disk.new(disk: '/') ; check.check!(host)
+
     attr_reader :disk, :result, :warn_level, :error_level
 
     def initialize eattributes={}
@@ -84,10 +88,6 @@ module Checks
 
     def check_type
       'disk'
-    end
-
-    def check! host
-      @result = Result.new(self) { host.run!(command) }
     end
 
     protected

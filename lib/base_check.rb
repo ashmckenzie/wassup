@@ -18,6 +18,10 @@ class BaseCheck
     klass.constantize.new(options['config'])
   end
 
+  def check! host
+    @result = result_klass.new(self) { host.run!(command) }
+  end
+
   def result_as_json
     result.for_json
   end
@@ -32,4 +36,7 @@ class BaseCheck
     raise NotImplementedError
   end
 
+  def result_klass
+    "#{self.class}::Result".constantize
+  end
 end
