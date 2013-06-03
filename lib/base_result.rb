@@ -1,9 +1,10 @@
 class BaseResult
 
   def initialize check, blk
+    @status = 'NOTOK'   # default
+
     @check = check
     @result = yield(blk)
-    @status = 'NOTOK'
 
     process!
   end

@@ -20,7 +20,8 @@ mac = Host.create(
 )
 
 mac.checks = [
-  { type: 'disk', config: { disk: '/', warn_level: 30 } }
+  { type: 'disk', config: { disk: '/' } },
+  { type: 'process', config: { string: 'redis', minimum: 1 } },
 ]
 
 mac.save!

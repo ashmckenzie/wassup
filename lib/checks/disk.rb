@@ -48,13 +48,16 @@ module Checks
           @used = used.to_i
           @available = available.to_i
 
-          if error?
-            @status = 'ERROR'
-          elsif warn?
-            @status = 'WARN'
-          else
-            @status = 'OK'
-          end
+          @status = 'OK'
+
+        elsif error?
+          @status = 'ERROR'
+
+        elsif warn?
+          @status = 'WARN'
+
+        else
+          # NOTOK
         end
       end
 
