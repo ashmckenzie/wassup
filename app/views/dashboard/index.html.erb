@@ -1,13 +1,28 @@
 <section class="hosts">
   <%- @hosts.each do |host| %>
     <h2><%= host.label %></h2>
-    <ul>
-      <%- host.results_newest_first.limit(10).each do |result| %>
-        <li>
-          <%= debug result %>
-          <%= result %>
-        </li>
-      <%- end %>
+
+    <table border="1" cellpadding="4">
+      <thead>
+        <th>Check</th>
+        <th>Result</th>
+        <th>Detail</th>
+        <th>When</th>
+      </thead>
+
+      <tbody>
+
+        <%- host.results_newest_first.limit(10).each do |result| %>
+          <tr>
+            <td><%= result.outcome.check %></td>
+            <td><%= result.status %></td>
+            <td width="500px"><%= result.outcome.response %></td>
+            <td><%= result.created_at %></td>
+          </tr>
+        <%- end %>
+
+        </tbody>
+      </table>
     </ul>
   <%- end %>
 </section>

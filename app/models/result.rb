@@ -21,6 +21,6 @@ class Result
   end
 
   def to_s
-    response
+    outcome
   end
 end
