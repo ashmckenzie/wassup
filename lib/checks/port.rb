@@ -17,11 +17,8 @@ module Checks
 
       def for_json
         {
-          check: {
-            type: check.check_type,
-            port_number: check.port_number,
-            timeout_in_seconds: check.timeout_in_seconds
-          }
+          message: message
+          timing:
         }
       end
 
@@ -75,6 +72,14 @@ module Checks
       @result = Result.new(self, outcome, outcome.message)
     end
 
+    def for_json
+      {
+        type: check_type,
+        port_number: port_number,
+        timeout_in_seconds: timeout_in_seconds
+      }
+    end
+
     protected
 
     def_delegators :@result
@@ -84,9 +89,12 @@ module Checks
     attr_writer :port_number, :timeout_in_seconds
 
     def command host
+      start = Time.now
+
       result = OpenStruct.new(
         exit_status: 0,  # OK
-        message: "Connected to port #{port_number}"
+        message: "Connected to port #{port_number}",
+        timing: 0
       )
 
       begin
@@ -102,6 +110,8 @@ module Checks
         result.exit_status = 2  # ERROR
         result.message = e.inspect
       end
+
+      result.timing = (Time.now - start)
 
       result
     end

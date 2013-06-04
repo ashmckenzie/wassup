@@ -7,20 +7,17 @@ class Result
   field :host_id, type: Integer
   field :status, type: String, default: DEFAULT_STATUS
   field :message, type: String
+  field :check, type: Hash
   field :checked_on, type: String
-  field :outcome, type: Hash
+  field :response, type: Hash
 
   belongs_to :host
 
-  def outcome
-    Hashie::Mash.new(attributes['outcome'])
+  def check
+    Hashie::Mash.new(attributes['check'])
   end
 
   def response
-    outcome.response
-  end
-
-  def to_s
-    outcome
+    Hashie::Mash.new(attributes['response])
   end
 end

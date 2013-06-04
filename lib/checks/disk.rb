@@ -15,19 +15,11 @@ module Checks
 
       def for_json
         {
-          check: {
-            type: check.check_type,
-            disk: check.disk,
-            warn_level: check.warn_level,
-            error_level: check.error_level
-          },
-          response: {
-            total: total,
-            used: used,
-            available: available,
-            percent_free: percent_free,
-            percent_used: percent_used
-          }
+          total: total,
+          used: used,
+          available: available,
+          percent_free: percent_free,
+          percent_used: percent_used
         }
       end
 
@@ -87,6 +79,15 @@ module Checks
 
     def check_type
       'disk'
+    end
+
+    def for_json
+      {
+        type: check_type,
+        disk: disk,
+        warn_level: warn_level,
+        error_level: error_level
+      }
     end
 
     protected

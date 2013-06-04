@@ -6,17 +6,19 @@
       <thead>
         <th>Check</th>
         <th>Result</th>
-        <th>Detail</th>
+        <th>Check detail</th>
+        <th>Outcome</th>
         <th>When</th>
       </thead>
 
       <tbody>
 
-        <%- host.results_newest_first.limit(10).each do |result| %>
+        <%- host.results_newest_first.limit(10).decorate.each do |result| %>
           <tr>
-            <td><%= result.outcome.check %></td>
-            <td><%= result.status %></td>
-            <td width="500px"><%= result.outcome.response %></td>
+            <td><%= result.check_type %></td>
+            <td class=<%= result.css_class %>><%= result.status %></td>
+            <td><%= result.check_detail %></td>
+            <td width="500px"><%= result.outcome_detail %></td>
             <td><%= result.created_at %></td>
           </tr>
         <%- end %>

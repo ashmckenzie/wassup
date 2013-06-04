@@ -13,16 +13,8 @@ module Checks
 
       def for_json
         {
-          check: {
-            type: check.check_type,
-            string: check.string,
-            minimum: check.minimum,
-            maximum: check.maximum
-          },
-          response: {
-            output: result.stdout,
-            count: count
-          }
+          output: result.stdout,
+          count: count
         }
       end
 
@@ -70,6 +62,15 @@ module Checks
 
     def check_type
       'process'
+    end
+
+    def for_json
+      {
+        type: check_type,
+        string: string,
+        minimum: minimum,
+        maximum: maximum
+      }
     end
 
     protected

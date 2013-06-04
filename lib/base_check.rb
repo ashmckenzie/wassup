@@ -18,6 +18,10 @@ class BaseCheck
     klass.constantize.new(options['config'])
   end
 
+  def for_json
+    raise NotImplementedError
+  end
+
   def check! host
     begin
       message = nil

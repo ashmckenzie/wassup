@@ -23,7 +23,11 @@ class CheckerWorker
 
     # Create it here so we can see it's PENDING
     #
-    result = Result.create(host: host, checked_on: nodename)
+    result = Result.create(
+      host: host,
+      check: check.for_json,
+      checked_on: nodename
+    )
 
     # Exception / timeout handling here
     check.check!(host)
@@ -31,7 +35,7 @@ class CheckerWorker
     # TODO: why can I not #update ??
     result.status = check.result.status
     result.message = check.result.message
-    result.outcome = check.result.for_json
+    result.response = check.result.for_json
     result.save!
 
     check
