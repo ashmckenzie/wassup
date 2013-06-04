@@ -18,6 +18,6 @@ class Result
   end
 
   def response
-    Hashie::Mash.new(attributes['response])
+    Hashie::Mash.new(attributes['response'])
   end
 end
