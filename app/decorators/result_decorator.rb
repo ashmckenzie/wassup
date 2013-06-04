@@ -15,8 +15,8 @@ class ResultDecorator < Draper::Decorator
     end.join(', ')
   end
 
-  def outcome_detail
-    outcome.map do |k, v|
+  def response_detail
+    response.map do |k, v|
       "#{k}: #{v}"
     end.join(', ')
   end

@@ -17,8 +17,8 @@ module Checks
 
       def for_json
         {
-          message: message
-          timing:
+          message: message,
+          timing: result.timing
         }
       end
 

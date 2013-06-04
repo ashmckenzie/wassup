@@ -2,12 +2,12 @@
   <%- @hosts.each do |host| %>
     <h2><%= host.label %></h2>
 
-    <table border="1" cellpadding="4">
+    <table border="1" cellpadding="4" width="100%">
       <thead>
         <th>Check</th>
         <th>Result</th>
         <th>Check detail</th>
-        <th>Outcome</th>
+        <th>Response</th>
         <th>When</th>
       </thead>
 
@@ -18,7 +18,7 @@
             <td><%= result.check_type %></td>
             <td class=<%= result.css_class %>><%= result.status %></td>
             <td><%= result.check_detail %></td>
-            <td width="500px"><%= result.outcome_detail %></td>
+            <td width="500px"><%= result.response_detail %></td>
             <td><%= result.created_at %></td>
           </tr>
         <%- end %>
