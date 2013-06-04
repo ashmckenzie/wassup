@@ -21,5 +21,17 @@ class ResultDecorator < Draper::Decorator
     end.join(', ')
   end
 
-  # https://www.google.com/calendar/event?action=VIEW&eid=XzZoMTQyYzIxNmdyazRiOWc3NTBqYWI5azZnczQyYjlwNzUzM2liYTQ3NHFrNmM5ZzZvcDMwZDI1NjQgYXNoQGFzaG1ja2VuemllLm9yZw&tok=MjYjYWxpc29ubWNrZW56aWU3OUBnbWFpbC5jb202MGJjMTE4NjRiNjRmYjc0ZmMxMWZkMzY4YzUxY2IwZjc2ZjdhY2Jj&ctz=Australia/Sydney&hl=en&response_updated=1
+  def created_at
+    better_time(object)
+  end
+
+  def checked_at
+    better_time(object)
+  end
+
+  private
+
+  def better_time object
+    object.created_at.strftime("%m/%d/%y %H:%M:%S")
+  end
 end

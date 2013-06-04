@@ -5,10 +5,12 @@
     <table border="1" cellpadding="4" width="100%">
       <thead>
         <th>Check</th>
-        <th>Result</th>
         <th>Check detail</th>
+        <th>Result</th>
         <th>Response</th>
-        <th>When</th>
+        <th>Checked on</th>
+        <th>Started At</th>
+        <th>Responded At</th>
       </thead>
 
       <tbody>
@@ -16,10 +18,12 @@
         <%- host.results_newest_first.limit(10).decorate.each do |result| %>
           <tr>
             <td><%= result.check_type %></td>
-            <td class=<%= result.css_class %>><%= result.status %></td>
             <td><%= result.check_detail %></td>
+            <td class=<%= result.css_class %>><%= result.status %></td>
             <td width="500px"><%= result.response_detail %></td>
+            <td><%= result.checked_on %></td>
             <td><%= result.created_at %></td>
+            <td><%= result.checked_at %></td>
           </tr>
         <%- end %>
 

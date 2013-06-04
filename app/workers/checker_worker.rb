@@ -36,6 +36,7 @@ class CheckerWorker
     result.status = check.result.status
     result.message = check.result.message
     result.response = check.result.for_json
+    result.checked_at = Time.now
     result.save!
 
     check

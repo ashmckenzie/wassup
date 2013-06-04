@@ -9,6 +9,7 @@ class Result
   field :message, type: String
   field :check, type: Hash
   field :checked_on, type: String
+  field :checked_at, type: DateTime
   field :response, type: Hash
 
   belongs_to :host

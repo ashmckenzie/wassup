@@ -23,7 +23,7 @@ module Checks
       end
 
       def success?
-        !error?
+        result.exit_status == 0
       end
 
       def warn?
