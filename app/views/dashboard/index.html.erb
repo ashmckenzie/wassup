@@ -2,7 +2,7 @@
   <%- @hosts.each do |host| %>
     <h2><%= host.label %></h2>
     <ul>
-      <%- host.results_newest_first.each do |result| %>
+      <%- host.results_newest_first.limit(10).each do |result| %>
         <li>
           <%= debug result %>
           <%= result %>

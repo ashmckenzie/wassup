@@ -19,10 +19,6 @@ class Host
   end
 
   def run! command
-    begin
-      connection.run(command, quiet: true, quiet_stderr: true, capture_exit_status: true)
-    rescue => e
-      Rails.logger.error "Exception raised - #{e.inspect}"
-    end
+    connection.run(command, quiet: true, quiet_stderr: true, capture_exit_status: true)
   end
 end

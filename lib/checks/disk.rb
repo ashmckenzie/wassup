@@ -5,17 +5,16 @@ module Checks
 
       attr_reader :total, :used, :available
 
-      def initialize check, &blk
+      def initialize check, result, message
         @total = -1
         @used = -1
         @available = -1
 
-        super(check, blk)
+        super
       end
 
       def for_json
         {
-          status: status,
           check: {
             type: check.check_type,
             disk: check.disk,

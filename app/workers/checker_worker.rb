@@ -19,21 +19,22 @@ class CheckerWorker
   private
 
   def check! host, options
-    result = Result.create(host: host, checked_on: nodename)
+    check = BaseCheck.create(options)
 
-    check = check_from_options(options)
+    # Create it here so we can see it's PENDING
+    #
+    result = Result.create(host: host, checked_on: nodename)
 
     # Exception / timeout handling here
     check.check!(host)
 
-    result.outcome = check.result_as_json
+    # TODO: why can I not #update ??
+    result.status = check.result.status
+    result.message = check.result.message
+    result.outcome = check.result.for_json
     result.save!
 
     check
-  end
-
-  def check_from_options options
-    BaseCheck.create(options)
   end
 
   def nodename

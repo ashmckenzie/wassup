@@ -1,5 +1,6 @@
 require 'socket'
 require 'timeout'
+require 'ostruct'
 
 module Checks
   class Port < BaseCheck
@@ -8,21 +9,19 @@ module Checks
 
       attr_reader :output
 
-      def initialize check, &blk
+      def initialize check, result, message
         @output = nil
 
-        super(check, blk)
+        super
       end
 
       def for_json
         {
-          status: status,
           check: {
             type: check.check_type,
             port_number: check.port_number,
             timeout_in_seconds: check.timeout_in_seconds
-          },
-          response: result
+          }
         }
       end
 
@@ -31,24 +30,24 @@ module Checks
       end
 
       def warn?
-        result[:status] == 'WARN'
+        result.exit_status == 1
       end
 
       def error?
-        result[:status] == 'ERROR'
+        result.exit_status == 2
       end
 
       protected
 
       def process!
-        if warn?
+        if success?
+          @status = 'OK'
+
+        elsif warn?
           @status = 'WARN'
 
         elsif error?
           @status = 'ERROR'
-
-        elsif success?
-          @status = 'OK'
 
         else
           # NOTOK
@@ -72,7 +71,8 @@ module Checks
     end
 
     def check! host
-      @result = Result.new(self) { command(host) }
+      outcome = command(host)
+      @result = Result.new(self, outcome, outcome.message)
     end
 
     protected
@@ -84,10 +84,10 @@ module Checks
     attr_writer :port_number, :timeout_in_seconds
 
     def command host
-      result = {
-        status: 'OK',
+      result = OpenStruct.new(
+        exit_status: 0,  # OK
         message: "Connected to port #{port_number}"
-      }
+      )
 
       begin
         timeout(timeout_in_seconds) do
@@ -95,19 +95,15 @@ module Checks
         end
 
       rescue Timeout::Error => e
-        result = {
-          status: 'WARN',
-          message: e.inspect,
-        }
+        result.exit_status = 1  # WARN
+        result.message = e.inspect
 
       rescue => e
-        result = {
-          status: 'ERROR',
-          message: e.inspect,
-        }
+        result.exit_status = 2  # ERROR
+        result.message = e.inspect
       end
 
-      return result
+      result
     end
   end
 end

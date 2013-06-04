@@ -1,10 +1,13 @@
 class BaseResult
 
-  def initialize check, blk
-    @status = 'NOTOK'   # default
+  attr_accessor :status, :message
 
+  def initialize check, result, message
     @check = check
-    @result = yield(blk)
+    @result = result
+    @message = message
+
+    @status = 'NOTOK'   # default
 
     process!
   end
@@ -24,7 +27,6 @@ class BaseResult
   protected
 
   attr_reader :check, :host, :result
-  attr_accessor :status
 
   def process!
     raise NotImplementedError

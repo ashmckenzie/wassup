@@ -115,6 +115,7 @@ GEM
     mime-types (1.23)
     minitest (4.7.4)
     moped (1.5.0)
+    naught (0.0.2)
     net-scp (1.1.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.6.7)
@@ -221,6 +222,7 @@ DEPENDENCIES
   kiqstand!
   mongoid!
   multi_json!
+  naught
   pry
   rails (= 4.0.0.rc1)
   rufus-scheduler

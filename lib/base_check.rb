@@ -19,11 +19,15 @@ class BaseCheck
   end
 
   def check! host
-    @result = result_klass.new(self) { host.run!(command) }
-  end
+    begin
+      message = nil
+      run_response = host.run!(command)
+    rescue => e
+      message = e.inspect
+      run_response = NullGoferResponse.new
+    end
 
-  def result_as_json
-    result.for_json
+    @result = result_klass.new(self, run_response, message)
   end
 
   protected

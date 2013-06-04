@@ -5,15 +5,14 @@ module Checks
 
       attr_reader :output
 
-      def initialize check, &blk
+      def initialize check, result, message
         @output = nil
 
-        super(check, blk)
+        super
       end
 
       def for_json
         {
-          status: status,
           check: {
             type: check.check_type,
             string: check.string,
@@ -21,7 +20,7 @@ module Checks
             maximum: check.maximum
           },
           response: {
-            output: result,
+            output: result.stdout,
             count: count
           }
         }
@@ -38,11 +37,12 @@ module Checks
       protected
 
       def process!
-        if error?
-          @status = 'ERROR'
 
-        elsif success?
+        if success?
           @status = 'OK'
+
+        elsif error?
+          @status = 'ERROR'
 
         else
           # NOTOK
@@ -52,7 +52,7 @@ module Checks
       private
 
       def count
-        @count ||= result.split(/\n/).count
+        @count ||= (result.stdout || '').split(/\n/).count
       end
     end
 

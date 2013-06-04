@@ -30,10 +30,9 @@ gem 'slim', '~> 1.3'
 gem 'rufus-scheduler'
 
 gem 'gofer'
-
 gem 'hashie'
-
 gem 'draper'
+gem 'naught'
 
 gem 'twitter-bootstrap-rails', github: 'seyhunak/twitter-bootstrap-rails'
 
