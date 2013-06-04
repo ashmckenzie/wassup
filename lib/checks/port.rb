@@ -22,9 +22,7 @@ module Checks
             port_number: check.port_number,
             timeout_in_seconds: check.timeout_in_seconds
           },
-          response: {
-            output: result
-          }
+          response: result
         }
       end
 

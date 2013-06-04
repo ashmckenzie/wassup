@@ -21,4 +21,8 @@ class Result
   def status
     outcome.fetch('status', DEFAULT_STATUS)
   end
+
+  def to_s
+    response
+  end
 end
