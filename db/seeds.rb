@@ -1,9 +1,17 @@
-# staging = Host.create(
-#   label: 'hotels_staging_au-app_master',
-#   hostname: 'ec2-54-252-88-49.ap-southeast-2.compute.amazonaws.com',
-#   user: 'deploy',
-#   keys: [ '/Users/ash/.ssh/jetstar_ey_2048_rsa' ]
-# )
+staging = Host.create(
+  label: 'Hotels Staging APP MASTER',
+  hostname: 'app_master.hotels_staging_au.ey',
+  user: 'deploy',
+  keys: [ '/Users/ash/.ssh/jetstar_ey_2048_rsa' ]
+)
+
+staging.checks = [
+  { type: 'disk', config: { disk: '/' } },
+  { type: 'process', config: { string: 'nginx', minimum: 1 } },
+  { type: 'port', config: { port_number: 81 } },
+]
+
+staging.save!
 
 # htpc = Host.create(
 #   label: 'HTPC',
