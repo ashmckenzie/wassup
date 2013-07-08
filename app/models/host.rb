@@ -14,6 +14,13 @@ class Host
     results.order_by('created_at DESC')
   end
 
+  def most_recent_results
+    checks = results.collection.aggregate([ { "$group" => { "_id" => "$check" } } ])
+    checks.map do |check|
+      results.order_by('created_at DESC').where(check: check['_id']).last.try(:decorate)
+    end.compact.sort { |x, y| x.check.type <=> y.check.type }
+  end
+
   def connection
     @connection ||= Gofer::Host.new(hostname, user, :keys => keys)
   end
